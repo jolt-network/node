@@ -1,0 +1,24 @@
+on:
+  push:
+    branches:
+      - main
+name: Build
+jobs:
+  build-binary:
+    strategy:
+      matrix:
+        include:
+          - build: linux
+            os: ubuntu-latest
+            rust: stable
+          - build: macos
+            os: macos-latest
+            rust: stable
+          - build: windows
+            os: windows-latest
+            rust: stable
+    steps:
+      - name: Install Rust
+        run: rustup install ${{matrix.rust}} && rustup target add ${{matrix.target}}
+      - name: Build
+        run: cargo build --release --target ${{matrix.target}}
