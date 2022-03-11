@@ -17,8 +17,9 @@ jobs:
           - build: windows
             os: windows-latest
             rust: stable
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Install Rust
-        run: rustup install ${{matrix.rust}} && rustup target add ${{matrix.target}}
+        run: rustup install ${{ matrix.rust }} && rustup target add ${{ matrix.target }}
       - name: Build
-        run: cargo build --release --target ${{matrix.target}}
+        run: cargo build --release --target ${{ matrix.target }}
