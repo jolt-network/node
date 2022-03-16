@@ -40,10 +40,10 @@ jobs:
                   stage=$(mktemp -d -t tmp)
                   ;;
           esac
-          cp target/${{ matrix.target }}/release/sysit $stage/
+          cp target/${{ matrix.target }}/release/jolt-node $stage/
           cd $stage
           RELEASE_VERSION=${GITHUB_REF#refs/tags/}
-          ASSET_NAME="sysit-$RELEASE_VERSION-${{ matrix.target }}.tar.gz"
+          ASSET_NAME="jolt-node-$RELEASE_VERSION-${{ matrix.target }}.tar.gz"
           ASSET_PATH="$src/$ASSET_NAME"
           echo "ASSET_PATH=$ASSET_PATH" >> $GITHUB_ENV
           tar czf $ASSET_PATH *
@@ -53,6 +53,6 @@ jobs:
         with:
           files: |
             ${{ env.ASSET_PATH }}
-            ${{ env.CHECKSUM_PATH }}       
+            ${{ env.CHECKSUM_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
