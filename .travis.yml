@@ -1,0 +1,71 @@
+dist: trusty
+language: rust
+services: docker
+sudo: required
+env:
+  global:
+    - CRATE_NAME=jolt-node
+matrix:
+  include:
+    # Linux
+    - env: TARGET=aarch64-unknown-linux-gnu
+    - env: TARGET=arm-unknown-linux-gnueabi
+    - env: TARGET=armv7-unknown-linux-gnueabihf
+    - env: TARGET=i686-unknown-linux-gnu
+    - env: TARGET=i686-unknown-linux-musl
+    - env: TARGET=mips-unknown-linux-gnu
+    - env: TARGET=mips64-unknown-linux-gnuabi64
+    - env: TARGET=mips64el-unknown-linux-gnuabi64
+    - env: TARGET=mipsel-unknown-linux-gnu
+    - env: TARGET=powerpc-unknown-linux-gnu
+    - env: TARGET=powerpc64-unknown-linux-gnu
+    - env: TARGET=powerpc64le-unknown-linux-gnu
+    - env: TARGET=s390x-unknown-linux-gnu DISABLE_TESTS=1
+    - env: TARGET=x86_64-unknown-linux-gnu
+    - env: TARGET=x86_64-unknown-linux-musl
+    # OSX
+    - env: TARGET=i686-apple-darwin
+      os: osx
+    - env: TARGET=x86_64-apple-darwin
+      os: osx
+    # Windows
+    - env: TARGET=x86_64-pc-windows-gnu
+    # Testing other channels
+    - env: TARGET=x86_64-unknown-linux-gnu
+      rust: nightly
+    - env: TARGET=x86_64-apple-darwin
+      os: osx
+      rust: nightly
+before_install:
+  - set -e
+  - rustup self update
+install:
+  - sh ci/install.sh
+  - source ~/.cargo/env || true
+script:
+  - bash ci/script.sh
+after_script: set +e
+before_deploy:
+  - sh ci/before_deploy.sh  
+deploy:
+  api_key:
+    secure: jrtAFFQJK7qF9ttbYAJYNIWF+C6mX8lyzQhSMiKz6YAac11EMWFWk14WqA/DZuUBe1zpIDOJO3oc5HP443Kov3TL+fL5b7OOlzx9dTQxGI4uijujBRiG3wK8bVatUTJEdxZ3KzSmTABMX6NdgASs9TZnRdRP7hFzY5z/mhXvMx7V8Ub8PKxmgzSA+S8OGidsp0jgtqjHryS3YLfzdd1RQF8CF0WU4jJWXmVmMrS4+rME1bBwkeiGRTvaeYr6DQBthfa3ixflbxj39D9LDq6dyUXSjRvAX9w7VkL2fwrEu+UBO44NQ8RXsfGDuD07ub/qob5X8tlX8mEfOfn9sRnBXnSPPOlIjhVTqk3FWnJtEaIsszI0WaGMUp0UxEjCzoENzM2AWhQVaHFKUFxStJ/bIkGsPY9UC8/irsg/EpXJ5npyQLKZit3IVqT/ZUyr3pz/2aDvDBZgwy+/HOU3NeTN9OOV9Io1Cz42JHIzpQsJKx+HAej6RDgsRBsui5yY8yEkj9NuMiLtlxBAK13WTX4fY4KugiDBfdw/dbQcs3+nKMEI3ICyDUr27SR+8Y279Bdo/Ve7yNKCFXVLH2TspwAONWszk469byH5jv97SyWx7usQTOLUNmw53s1E3iVh7AWqdpsOhT0q8Us7CpDgyQLFaERQx7c1m8KB/a+nWywcsII=
+  file_glob: true
+  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
+  on:
+    condition: $TRAVIS_RUST_VERSION = stable
+    tags: true
+  provider: releases
+  skip_cleanup: true
+cache: cargo
+before_cache:
+  # Travis can't cache files that are not readable by "others"
+  - chmod -R a+r $HOME/.cargo
+branches:
+  only:
+    # tags
+    - /^v\d+\.\d+\.\d+.*$/
+    - master
+notifications:
+  email:
+    on_success: never
