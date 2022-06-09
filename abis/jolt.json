@@ -2,20 +2,233 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
+        "internalType": "uint32",
+        "name": "_bondingBlocks",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_unbondingBlocks",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_fee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_minimumBonus",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_maximumBonus",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_assignedTurnBlocks",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_competitiveTurnBlocks",
+        "type": "uint32"
       },
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "_minimumBond",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_feeReceiver",
+        "type": "address"
       }
     ],
-    "name": "addCredit",
-    "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "Disallowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Forbidden",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InconsistentUpgrade",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAssignedTurnBlocks",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidBondingBlocks",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidCompetitiveTurnBlocks",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidFee",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidIndices",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidLiquidity",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidLiquidityTokenPremium",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidMaximumBonus",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidMinimumBond",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidMinimumBonus",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSpecification",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidTurn",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidUnbondingBlocks",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoEarnings",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonExistentJob",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotAWorker",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotBonding",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotEnoughBonded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotEnoughBonding",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotEnoughCredit",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotUnbonding",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NothingToConsolidate",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressFeeReceiver",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressJob",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressJobsCreator",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressJolt",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressLiquidity",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressLiquidityWeightCalculator",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressNativeToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressNewJob",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddressWorkEvaluator",
+    "type": "error"
   },
   {
     "inputs": [
@@ -23,36 +236,11 @@
         "internalType": "uint256",
         "name": "_id",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_permittedAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_v",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "_r",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "_s",
-        "type": "bytes32"
       }
     ],
-    "name": "addCreditWithPermit",
+    "name": "addCredit",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -81,53 +269,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_liquidity",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "addLiquidityCredit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "_creator",
         "type": "address"
       }
     ],
     "name": "allowJobCreator",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_liquidity",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_weightCalculator",
-        "type": "address"
-      }
-    ],
-    "name": "allowLiquidity",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -146,68 +293,10 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "bond",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_permittedAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_v",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "_r",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "_s",
-        "type": "bytes32"
-      }
-    ],
-    "name": "bondWithPermit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "bonded",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -267,39 +356,8 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "credit",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "locked",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IMaster.Credit",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
-        "name": "_worker",
+        "name": "_address",
         "type": "address"
       }
     ],
@@ -319,57 +377,6 @@
     "name": "disallowJobCreator",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_liquidity",
-        "type": "address"
-      }
-    ],
-    "name": "disallowLiquidity",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "disallowed",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "earned",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -444,24 +451,12 @@
             "type": "string"
           },
           {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "locked",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IMaster.Credit",
+            "internalType": "uint256",
             "name": "credit",
-            "type": "tuple"
+            "type": "uint256"
           }
         ],
-        "internalType": "struct IMaster.JobInfo",
+        "internalType": "struct JobInfo",
         "name": "",
         "type": "tuple"
       }
@@ -486,7 +481,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_jobsCreator",
+        "name": "",
         "type": "address"
       }
     ],
@@ -534,24 +529,12 @@
             "type": "string"
           },
           {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "locked",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IMaster.Credit",
+            "internalType": "uint256",
             "name": "credit",
-            "type": "tuple"
+            "type": "uint256"
           }
         ],
-        "internalType": "struct IMaster.JobInfo[]",
+        "internalType": "struct JobInfo[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -597,24 +580,12 @@
             "type": "string"
           },
           {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "locked",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IMaster.Credit",
+            "internalType": "uint256",
             "name": "credit",
-            "type": "tuple"
+            "type": "uint256"
           }
         ],
-        "internalType": "struct IMaster.JobInfo[]",
+        "internalType": "struct JobInfo[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -624,20 +595,7 @@
   },
   {
     "inputs": [],
-    "name": "jolt",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "liquidityTokenPremium",
+    "name": "maximumBonus",
     "outputs": [
       {
         "internalType": "uint16",
@@ -649,14 +607,34 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "minimumBond",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "_liquidityToken",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "liquidityWeightCalculator",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minimumBonus",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
     "outputs": [
       {
         "internalType": "address",
@@ -766,12 +744,25 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_jolt",
-        "type": "address"
+        "internalType": "uint16",
+        "name": "_maximumBonus",
+        "type": "uint16"
       }
     ],
-    "name": "setJolt",
+    "name": "setMaximumBonus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_minimumBond",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinimumBond",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -780,11 +771,11 @@
     "inputs": [
       {
         "internalType": "uint16",
-        "name": "_fee",
+        "name": "_minimumBonus",
         "type": "uint16"
       }
     ],
-    "name": "setLiquidityTokenPremium",
+    "name": "setMinimumBonus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -806,20 +797,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_workEvaluator",
-        "type": "address"
-      }
-    ],
-    "name": "setWorkEvaluator",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_worker",
+        "name": "_address",
         "type": "address"
       },
       {
@@ -844,6 +822,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -881,7 +872,7 @@
       },
       {
         "internalType": "address",
-        "name": "_newJob",
+        "name": "_newAddress",
         "type": "address"
       },
       {
@@ -995,7 +986,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct IMaster.WorkerInfo",
+        "internalType": "struct WorkerInfo",
         "name": "",
         "type": "tuple"
       }
@@ -1074,7 +1065,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct IMaster.WorkerInfo[]",
+        "internalType": "struct WorkerInfo[]",
         "name": "",
         "type": "tuple[]"
       }
