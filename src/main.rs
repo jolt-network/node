@@ -24,6 +24,12 @@ struct Args {
     private_key: String,
 }
 
+struct TurnInfo {
+    currently_assigned: bool,
+    index: u64,
+    first_block: u64,
+}
+
 static JOLT_ADDRESS: Lazy<HashMap<U256, Address>> = Lazy::new(|| {
     [(
         Chain::Goerli.into(),
@@ -65,7 +71,19 @@ async fn main() -> eyre::Result<()> {
     );
 
     while let Some(block) = websocket_provider.subscribe_blocks().await?.next().await {
-        let block_number = U256::from(block.number.unwrap().as_u64());
+        let block_number = block.number.unwrap().as_u64();
+
+        let turn_info = fetch_turn_info(block_number, &mut multicall, &jolt).await?;
+        println!(
+            "Turn {} in epoch started at block {}, currently {}",
+            turn_info.index,
+            turn_info.first_block,
+            if turn_info.currently_assigned {
+                "assigned"
+            } else {
+                "competitive"
+            }
+        );
 
         let jobs = fetch_jobs(&jolt).await?;
         let workable_jobs: Vec<(&JobInfo, Bytes)> =
@@ -85,8 +103,35 @@ async fn main() -> eyre::Result<()> {
             pending_tx.await?;
             println!("Worked successfully on job with id {}", job.id);
         }
+
+        println!("");
     }
     Ok(())
+}
+
+async fn fetch_turn_info(
+    block_number: u64,
+    multicall: &mut Multicall<SignerMiddleware<Provider<Http>, LocalWallet>>,
+    jolt: &Jolt<SignerMiddleware<Provider<Http>, LocalWallet>>,
+) -> eyre::Result<TurnInfo> {
+    multicall.clear_calls();
+    multicall.add_call(jolt.assigned_turn_blocks());
+    multicall.add_call(jolt.competitive_turn_blocks());
+    multicall.add_call(jolt.epoch_checkpoint());
+    let result = multicall.call_raw().await?;
+
+    let assigned_turn_blocks = U256::from_token(result[0].clone()).unwrap().as_u64();
+    let competitive_turn_blocks = U256::from_token(result[1].clone()).unwrap().as_u64();
+    let epoch_checkpoint = U256::from_token(result[2].clone()).unwrap().as_u64();
+
+    let full_turn_blocks = assigned_turn_blocks + competitive_turn_blocks;
+    let full_turn_index = (block_number - epoch_checkpoint) / full_turn_blocks;
+    let first_block_in_turn = epoch_checkpoint + (full_turn_index * full_turn_blocks);
+    Ok(TurnInfo {
+        currently_assigned: block_number - first_block_in_turn < assigned_turn_blocks,
+        index: full_turn_index,
+        first_block: first_block_in_turn,
+    })
 }
 
 async fn fetch_jobs(
