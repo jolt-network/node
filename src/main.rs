@@ -33,7 +33,7 @@ struct TurnInfo {
 static JOLT_ADDRESS: Lazy<HashMap<U256, Address>> = Lazy::new(|| {
     [(
         Chain::Goerli.into(),
-        Address::from_str("d5192f7DB2c20764aa66336F61f711e3Fe9CC43C").expect("Decoding failed"),
+        Address::from_str("c9E426B468d334AF6208ef9b3bA5f599d1417c6e").expect("Decoding failed"),
     )]
     .into()
 });
