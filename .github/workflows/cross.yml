@@ -1,0 +1,88 @@
+on:
+  push:
+    tags:
+      - "v*"
+name: cross-platform
+jobs:
+  build:
+    name: ${{ matrix.job.target }} (${{ matrix.job.os }})
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            artifact: jolt-node
+            asset: x86_64-linux
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            artifact: jolt-node
+            asset: arm64-linux
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            artifact: jolt-node
+            asset: x86_64-darwin
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            artifact: jolt-node
+            asset: arm64-darwin
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact: jolt-node.exe
+            asset: x86_64-windows
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Apple M1 setup
+        if: ${{ matrix.job.target == 'aarch64-apple-darwin' }}
+        run: |
+          echo "SDKROOT=$(xcrun -sdk macosx --show-sdk-path)" >> $GITHUB_ENV
+          echo "MACOSX_DEPLOYMENT_TARGET=$(xcrun -sdk macosx --show-sdk-platform-version)" >> $GITHUB_ENV
+      - name: Linux ARM setup
+        if: ${{ matrix.job.target == 'aarch64-unknown-linux-gnu' }}
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.job.target }}
+          override: true
+          profile: minimal
+      - name: Environment information
+        shell: bash
+        run: |
+          gcc --version || true
+          rustup -V
+          rustup toolchain list
+          rustup default
+          cargo -V
+          rustc -V
+      - uses: Swatinem/rust-cache@v1
+        with:
+          cache-on-failure: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: ${{ matrix.job.use-cross }}
+          command: build
+          args: --verbose --release
+      - name: Run
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: ${{ matrix.job.use-cross }}
+          command: run
+          args: -p jolt-node -- --help
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/${{ matrix.job.artifact }}
+          asset_name: ${{ matrix.job.asset }}-${{ steps.get_version.outputs.VERSION }}
+          tag: ${{ github.ref }}
